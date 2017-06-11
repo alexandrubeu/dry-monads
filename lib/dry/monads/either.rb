@@ -12,7 +12,7 @@ module Dry
       include Dry::Equalizer(:right, :left)
       include Transformer
 
-      attr_reader :right, :left
+      attr_reader :right, :left, :type
 
       class << self
         # Wraps the given value with Right
@@ -22,6 +22,10 @@ module Dry
         def pure(value)
           Right.new(value)
         end
+      end
+
+      def initialize(type)
+        @type = type
       end
 
       # Returns self, added to keep the interface compatible with other monads.
@@ -48,7 +52,9 @@ module Dry
         alias value right
 
         # @param right [Object] a value in a correct state
-        def initialize(right)
+        def initialize(right, type = nil)
+          super(type)
+
           @right = right
         end
 
